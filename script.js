@@ -1,3 +1,55 @@
+// JS-powered navbar animation: bounce and color flash on hover
+window.addEventListener('DOMContentLoaded', () => {
+  // Highlight navbar link when hovering over a section
+  const sectionIds = ['home', 'about', 'photos', 'reservations'];
+  sectionIds.forEach(id => {
+    const section = document.getElementById(id);
+    const navLink = document.querySelector('.navbar a[href="#' + id + '"]');
+    if (section && navLink) {
+      section.addEventListener('mouseenter', () => {
+        navLink.classList.add('section-hover');
+      });
+      section.addEventListener('mouseleave', () => {
+        navLink.classList.remove('section-hover');
+      });
+    }
+  });
+  const navbarLinks = document.querySelectorAll('.navbar a');
+  navbarLinks.forEach(link => {
+    link.addEventListener('mouseenter', () => {
+      link.classList.add('js-animated');
+    });
+    link.addEventListener('mouseleave', () => {
+      link.classList.remove('js-animated');
+    });
+    // Native smooth scroll to section on click (most reliable)
+    link.addEventListener('click', function(e) {
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        const target = document.querySelector(href);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Remove focus from link so underline disappears
+          link.blur();
+        }
+      }
+    });
+  });
+});
+window.addEventListener('DOMContentLoaded', () => {
+  // Navbar fade-in-down animation
+  const navbar = document.querySelector('.navbar');
+  if (navbar) {
+    setTimeout(() => navbar.classList.add('visible'), 400);
+  }
+  const popup = document.getElementById('event-popup');
+  const closeBtn = document.getElementById('close-event-popup');
+  if (popup && closeBtn) {
+    popup.style.display = 'flex';
+    closeBtn.onclick = () => { popup.style.display = 'none'; };
+  }
+});
 // Fade-in pop-up on scroll for section text and Instagram tab
 window.addEventListener('DOMContentLoaded', () => {
   const fadeEls = document.querySelectorAll('.fade-in-pop');
@@ -9,6 +61,12 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }, { threshold: 0.2 });
   fadeEls.forEach(el => observer.observe(el));
+
+  // Special case: address in home section (always visible, so fade in after short delay)
+  const address = document.querySelector('.address-corner');
+  if (address) {
+    setTimeout(() => address.classList.add('visible'), 700);
+  }
 });
 // Slideshow for Photos section
 let slideIndex = 0;
@@ -163,3 +221,4 @@ window.addEventListener('DOMContentLoaded', () => {
     el.classList.add('pop-up');
   });
 });
+
